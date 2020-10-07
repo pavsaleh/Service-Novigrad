@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">Service Novigrad</string>
+    <string name="title_activity_login">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="promp_password">Password</string>
+    <string name="prompt_firstname">First Name</string>
+    <string name="prompt_lastname">Last Name</string>
+
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="action_register">Register</string>
+    <string name="action_About">About</string>
+
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is in incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email completions."</string>
+    <string name="title_activity_register">Sign in</string>
+    <string name="title_activity_signup">Sign up for Service Novigrad</string>
+    <string name="signupPWD">Enter a password</string>
+    <string name="signupEmail">Enter your email</string>
+    <string name="signup_Firstname">Your first name</string>
+    <string name="signup_lastname">Your last name</string>
+    <string name="signup_becheck">I\'m a Service Novigrad employee</string>
+    <string name="register_button">Register</string>
+    <string name="AboutTitle">What is Service Novigrad?</string>
+    <string name="AboutDesc">Service Novigrad is the new platform for the residents of Novigrad to enquire about the services offered by the province. Services such as driver\'s license, health card and photo ID are offered. Customers can search for a Service Novigrad branch by address, type of service provided, or working hours.</string>
+</resources>
