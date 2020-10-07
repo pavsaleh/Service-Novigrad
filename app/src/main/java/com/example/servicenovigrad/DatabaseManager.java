@@ -88,32 +88,6 @@ public class DatabaseManager {
         });
     }
 
-    public void checkAndSetAdmin() {
-        Query query = databaseUsers.child("users").equalTo("admin");
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                boolean adminExists;
-                if (dataSnapshot.exists()) {
-                    for (DataSnapshot U1 : dataSnapshot.getChildren()) {
-                        User user = U1.getValue(User.class);
-                        if (user.username.equals("Admin")) {
-                            adminExists = true;
-                        } else {}
-                    }
-                } else {
-                    adminExists = false;
-                    if(!adminExists){
-                        CreateUser("admin","admin","admin","admin","admin",User.ADMIN);
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {}
-        });
-    }
-
     public void checkAndSetUser(final String username, final String email, final String password, final String FirstName, final String LastName, final String AccountType, final Context context) { //checks if user exists, if it doesnt, it creates one
         Query query = databaseUsers.child("users").orderByChild("username").equalTo(username);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -146,55 +120,6 @@ public class DatabaseManager {
             public void onCancelled(DatabaseError databaseError) {}
         });
     }
-
-    /*public String AccountType (String username ){
-        Iterator<User> it = fakeDB.iterator();
-        while(it.hasNext()){
-            User temp = it.next();
-            if(temp.username.equals(username)){
-                Log.e("AccountType", temp.AccountType);
-                return temp.AccountType;
-            }
-        }
-        throw new NullPointerException("no user found");
-    }
-
-    public String AccountList (String username ) {
-        Iterator<User> it = fakeDB.iterator();
-        String userList = "\n Heres a list of all users \n";
-        String tempuser;
-        while (it.hasNext()) {
-            User temp = it.next();
-            tempuser = "User: " + temp.username + "Role: " + temp.AccountType;
-            userList = userList + "\n";
-        }
-        return userList;
-    }
-
-    public  String getName(String username) {
-        Iterator<User> it = fakeDB.iterator();
-        while (it.hasNext()) {
-            User temp = it.next();
-            if (temp.username.equals(username)) {
-                Log.e("firstname", temp.FirstName);
-                return temp.FirstName;
-            }
-        }
-        throw new NullPointerException("no user found");
-    }
-
-    public boolean verifyCredentials(String username, String Password){
-        firebase.auth().
-        Iterator<User> it = fakeDB.iterator();
-        while(it.hasNext()){
-            User temp = it.next();
-            if(temp.username.equals(username)){
-                Log.e("firstname", temp.FirstName);
-                return temp.password.equals(Password);
-            }
-        }
-        return false;
-    }*/
 
     private DatabaseManager(){
         databaseUsers = FirebaseDatabase.getInstance().getReference();
