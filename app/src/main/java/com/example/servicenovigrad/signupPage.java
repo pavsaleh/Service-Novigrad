@@ -54,10 +54,9 @@ public class signupPage extends AppCompatActivity {
                 String ROLE;
                 if(isEmployee.isChecked()){
                     ROLE = User.EMPLOYEE;
-                }else{
+                } else{
                     ROLE = User.CUSTOMER;
                 }
-
 
                 sFirstName = FirstName.getText().toString();
                 sLastName = LastName.getText().toString();
@@ -70,7 +69,6 @@ public class signupPage extends AppCompatActivity {
                 }else{
                     Toast.makeText(getApplicationContext(), "Invalid or Blank Information", Toast.LENGTH_LONG).show();
                 }
-
             }
         });
     }

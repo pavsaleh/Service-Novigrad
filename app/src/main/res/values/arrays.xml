@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="android_dropdown_arrays">
+        <item>Per hour</item>
+        <item>Per day</item>
+        <item>Per Service</item>
+    </string-array>
+
+</resources>

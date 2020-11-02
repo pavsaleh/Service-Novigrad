@@ -36,23 +36,14 @@ public class Login extends AppCompatActivity {
         buttonRegister = findViewById(R.id.buttonRegister);
         DBM = DatabaseManager.getinstance();
         DBM.CreateUser(User.ADMIN,User.ADMIN, User.ADMIN, User.ADMIN,User.ADMIN, User.ADMIN);
+
         buttonSignin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DBM.loginFIREBASE(getApplicationContext(), loginUsername.getText().toString(), loginPassword.getText().toString());
-                /*boolean validUser = DBM.verifyCredentials(loginUsername.getText().toString(), loginPassword.getText().toString());
-                if (validUser) {
-                    Toast.makeText(getApplicationContext(), "Good Login credentials", Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(Login.this, MainActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putString("username", loginUsername.getText().toString());
-                    intent.putExtras(bundle);
-                    startActivity(intent);
-                }else{
-                    Toast.makeText(getApplicationContext(), "Those credentials are not accepted. Try another username and password.", Toast.LENGTH_LONG).show();
-                }*/
             }
         });
+
         buttonRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,6 +52,7 @@ public class Login extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
         buttonAbout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

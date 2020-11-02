@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -13,7 +14,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.List;
+
 import static com.example.servicenovigrad.MainActivity.hellomessage;
+import static com.example.servicenovigrad.MainActivity.makePost;
+
 
 public class DatabaseManager {
     private static DatabaseManager instance;
@@ -29,6 +34,21 @@ public class DatabaseManager {
         User user = new User(username, email, password, FirstName, LastName, AccountType);
         String userID = databaseUsers.push().getKey();
         databaseUsers.child("users").child(username).setValue(user);
+    }
+
+    public void addService(String serviceProviderUsername, String serviceType, Double servicePrice, Context C, List<String> informationList, List<String> documentList){
+        int serviceHash = Math.abs ((serviceProviderUsername.toString()+serviceType+servicePrice.toString()).hashCode());// unique hashcode
+        Service service = new Service(serviceProviderUsername, serviceType, servicePrice, serviceHash, informationList, documentList);
+        databaseUsers.child("services").child(Integer.toString(serviceHash)).setValue(service);
+        attachServicetoUser(serviceProviderUsername, serviceHash, service);
+        Toast.makeText(C, "Your service was added", Toast.LENGTH_LONG).show();
+        Bundle bundle = new Bundle();
+        Intent i = new Intent(C, MainActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        bundle.putString("username", serviceProviderUsername);
+        i.putExtras(bundle);
+
+        C.startActivity(i);
     }
 
     public void loginFIREBASE(final Context context, final String Username, final String pword) {
@@ -74,8 +94,11 @@ public class DatabaseManager {
                         User user = U1.getValue(User.class);
                         if (user.username.equals(Username)) {
                             hellomessage.setText("Hello " + Username+ "\nYou are a user of type " + user.AccountType);
+                            if(user.AccountType.toString().equals("admin") ) {
+                                makePost.setVisibility(Button.VISIBLE);
+                            }
                         } else {
-                            Toast.makeText(context, "no user logged in", Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, "No user logged in", Toast.LENGTH_LONG).show();
                         }
                     }
                 } else {
@@ -85,6 +108,35 @@ public class DatabaseManager {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {}
+        });
+    }
+
+    public void checkAndSetAdmin() {
+        Query query = databaseUsers.child("users").equalTo("admin");
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                boolean adminExists;
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot U1 : dataSnapshot.getChildren()) {
+                        User user = U1.getValue(User.class);
+                        if (user.username.equals("Admin")) {
+                            adminExists = true;
+                        } else {
+                        }
+                    }
+                } else {
+                    adminExists = false;
+                    if(!adminExists){
+                        CreateUser("admin","admin",
+                                "admin","admin","admin",User.ADMIN);
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
         });
     }
 
@@ -100,7 +152,7 @@ public class DatabaseManager {
                         if (user.username.equals(username)) {
                             Log.d("WTF", user.AccountType);
                             UserExists = true;
-                            Log.d("Account creation", "User already existss");
+                            Log.d("Account creation", "User already exists");
                             Toast.makeText(context, "Created user already exists, try again", Toast.LENGTH_LONG).show();
                         } else {}
                     }
@@ -110,6 +162,7 @@ public class DatabaseManager {
                     if(!UserExists){
                         CreateUser(username,email,password,FirstName,LastName,AccountType);
                         Intent intent = new Intent(context, Login.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent);
                         Toast.makeText(context, "Login using those new credentials", Toast.LENGTH_LONG).show();
                     }
@@ -118,6 +171,40 @@ public class DatabaseManager {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {}
+        });
+    }
+
+    public void RemoveService(int serviceID, String Username) {
+        DatabaseReference dR = FirebaseDatabase.getInstance().getReference().child("services").child(Integer.toString(serviceID));
+        dR.removeValue();
+        DatabaseReference dR2 = FirebaseDatabase.getInstance().getReference().child("users").child(Username).child("so").child(Integer.toString(serviceID));
+        dR2.removeValue();
+    }
+
+    private void attachServicetoUser(final String username, final int ServiceHash, final Service service) {
+        Query query = databaseUsers.child("users").orderByChild("username").equalTo(username);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot U1 : dataSnapshot.getChildren()) {
+                        User user = U1.getValue(User.class);
+                        if (user.username.equals(username)) {
+                            // user.servicesOffered.add(ServiceHash);
+                            // databaseUsers.child("users").child(username).setValue(user);
+                            databaseUsers.child("users").child(username).child("so").child(String.valueOf(ServiceHash)).setValue(service);
+                        } else {
+                        }
+                    }
+                } else {
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
         });
     }
 

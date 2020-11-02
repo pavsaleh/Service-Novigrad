@@ -38,17 +38,25 @@
             android:orientation="vertical">
 
             <Button
-                android:id="@+id/button_editProfile"
+                android:id="@+id/button_SeeServices"
                 android:layout_width="220dp"
                 android:layout_height="wrap_content"
-                android:text="Create or Edit profile"
-                android:visibility="invisible" />
+                android:text="Show me the Services" />
 
-            <TextView
-                android:id="@+id/userType"
-                android:layout_width="match_parent"
+            <Button
+                android:id="@+id/Button_PostService"
+                android:layout_width="220dp"
                 android:layout_height="wrap_content"
-                android:visibility="invisible" />
+                android:text="Post a Service"
+                android:visibility="invisible"/>
+
+
+            <Button
+                android:id="@+id/Button_EditService"
+                android:layout_width="220dp"
+                android:layout_height="wrap_content"
+                android:text="Edit your Service"
+                android:visibility="gone" />
         </LinearLayout>
     </FrameLayout>
 

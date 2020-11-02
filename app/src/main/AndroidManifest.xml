@@ -2,6 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.servicenovigrad">
 
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -25,6 +30,14 @@
         </activity>
         <activity android:name=".signupPage" />
         <activity android:name=".About" />
+        <activity android:name=".newPost" />
+        <activity android:name=".makeNewService" />
+        <activity
+            android:name=".showAllServices"
+            android:label="@string/title_activity_show_all_services"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".DisplayServices" />
+        <activity android:name=".EditService"></activity>
     </application>
 
 </manifest>

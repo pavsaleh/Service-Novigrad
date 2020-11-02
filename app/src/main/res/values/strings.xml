@@ -28,4 +28,6 @@
     <string name="register_button">Register</string>
     <string name="AboutTitle">What is Service Novigrad?</string>
     <string name="AboutDesc">Service Novigrad is the new platform for the residents of Novigrad to enquire about the services offered by the province. Services such as driver\'s license, health card and photo ID are offered. Customers can search for a Service Novigrad branch by address, type of service provided, or working hours.</string>
+    <string name="serviceTitle_hint">Service Title</string>
+    <string name="title_activity_show_all_services">showAllServices</string>
 </resources>
