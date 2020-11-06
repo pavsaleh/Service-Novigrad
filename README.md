@@ -1,4 +1,4 @@
-https://github.com/SEG2105-uottawa/seg2105f20-project-project_gr-55
+https://github.com/SEG2105-uottawa/project_GR-55
 
 # SEG2105 PROJECT
 ## Team member
