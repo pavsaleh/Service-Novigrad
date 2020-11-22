@@ -30,14 +30,22 @@
         </activity>
         <activity android:name=".signupPage" />
         <activity android:name=".About" />
-        <activity android:name=".newPost" />
         <activity android:name=".makeNewService" />
         <activity
             android:name=".showAllServices"
             android:label="@string/title_activity_show_all_services"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".DisplayServices" />
-        <activity android:name=".EditService"></activity>
+        <activity android:name=".EditService" />
+        <activity android:name=".HourSelect" />
+        <activity android:name=".makeProfile" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/maps_api_key" />
+
+        <activity android:name=".seeProfile" />
+        <activity android:name=".seeAvailability" />
+        <activity android:name=".specificServices"></activity>
     </application>
 
 </manifest>

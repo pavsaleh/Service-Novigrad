@@ -13,6 +13,14 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        // Read the API key from ./secure.properties into R.string.maps_api_key
+        def secureProps = new Properties()
+        if (file("../secure.properties").exists()) {
+            file("../secure.properties")?.withInputStream { secureProps.load(it) }
+        }
+        resValue "string", "maps_api_key", (secureProps.getProperty("MAPS_API_KEY") ?: "")
+
     }
 
     buildTypes {
@@ -37,6 +45,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-database'
     implementation 'com.firebaseui:firebase-ui-database:4.3.2'
     implementation 'com.firebaseui:firebase-ui-firestore:4.3.2'
+    implementation 'com.google.android.gms:play-services-places:16.0.0'
+    implementation 'com.googlecode.libphonenumber:libphonenumber:4.3'
+    implementation 'com.googlecode.libphonenumber:geocoder:1.7'
 
 }
 

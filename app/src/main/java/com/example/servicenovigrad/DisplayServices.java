@@ -36,6 +36,7 @@ public class DisplayServices extends AppCompatActivity {
         DBM = DatabaseManager.getinstance();
         lv = (ListView) findViewById(R.id.listView);
         Query query = FirebaseDatabase.getInstance().getReference().child("services");
+
         FirebaseListOptions<Service> options = new FirebaseListOptions.Builder<Service>()
                 .setLayout(R.layout.service)
                 .setQuery(query, Service.class)
@@ -49,7 +50,6 @@ public class DisplayServices extends AppCompatActivity {
                 TextView serviceType = v.findViewById(R.id.serviceType);
                 TextView serviceHash = v.findViewById(R.id.serviceHash);
 
-
                 final Service service = (Service) model;
                 servicePrice.setText("Price: $" + service.servicePrice.toString());
                 serviceProviderUsername.setText("Service Provider: " + service.serviceProviderUsername.toString());
@@ -59,20 +59,24 @@ public class DisplayServices extends AppCompatActivity {
 
                 Button button_edit = v.findViewById(R.id.button_Edit);
                 Button button_del = v.findViewById(R.id.button_Del);
-                Button button_View = v.findViewById(R.id.button_View);
-
+                Button button_View_profile = v.findViewById(R.id.button_View_Profile);
+                Button availability = v.findViewById(R.id.availability);
+                Button copyService = v.findViewById(R.id.cloneAD);
 
                 if (CurrentUser.equals(service.serviceProviderUsername.toString()) || CurrentUser.equals("admin")) {
                     button_edit.setVisibility(View.VISIBLE);
                     button_del.setVisibility(View.VISIBLE);
 
                 }
+                if (CurrentUserType.equals("Employee") && service.serviceProviderUsername.equals("admin")) {
+                    copyService.setVisibility(View.VISIBLE);
+                }
                 button_del.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         DBM.RemoveService(service.serviceHash.intValue(), service.serviceProviderUsername);
                         finish();
-                        Toast.makeText(getApplicationContext(), "item deleted!" ,Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "item deleted!", Toast.LENGTH_LONG).show();
 
                     }
                 });
@@ -91,13 +95,34 @@ public class DisplayServices extends AppCompatActivity {
 
                     }
                 });
-                button_View.setOnClickListener(new View.OnClickListener() {
+                button_View_profile.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(getApplicationContext(), "Not required for this deliverable", Toast.LENGTH_LONG).show();
+                        Bundle bundle = new Bundle();
+                        Intent i = new Intent(getApplicationContext(), seeProfile.class);
+                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        bundle.putString("selectedUser", service.serviceProviderUsername);
+                        i.putExtras(bundle);
+                        startActivity(i);
                     }
                 });
-
+                availability.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Bundle bundle = new Bundle();
+                        Intent i = new Intent(getApplicationContext(), seeAvailability.class);
+                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        bundle.putString("selectedUser", service.serviceProviderUsername);
+                        i.putExtras(bundle);
+                        startActivity(i);
+                    }
+                });
+                copyService.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        DBM.addService(CurrentUser,service.serviceType.toString(), service.servicePrice.doubleValue(),getApplicationContext(), service.informationList, service.documentList);
+                    }
+                });
             }
         };
         lv.setAdapter(adapter);

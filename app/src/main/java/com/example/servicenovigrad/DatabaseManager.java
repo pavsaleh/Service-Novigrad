@@ -1,11 +1,19 @@
 package com.example.servicenovigrad;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
+import androidx.annotation.NonNull;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -16,8 +24,16 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
+import static android.content.ContentValues.TAG;
 import static com.example.servicenovigrad.MainActivity.hellomessage;
 import static com.example.servicenovigrad.MainActivity.makePost;
+import static com.example.servicenovigrad.MainActivity.button_seMyAds;
+import static com.example.servicenovigrad.MainActivity.editHours;
+import static com.example.servicenovigrad.MainActivity.editPost;
+import static com.example.servicenovigrad.MainActivity.editProfile;
+import static com.example.servicenovigrad.MainActivity.userType1;
+
+
 
 
 public class DatabaseManager {
@@ -37,7 +53,7 @@ public class DatabaseManager {
     }
 
     public void addService(String serviceProviderUsername, String serviceType, Double servicePrice, Context C, List<String> informationList, List<String> documentList){
-        int serviceHash = Math.abs ((serviceProviderUsername.toString()+serviceType+servicePrice.toString()).hashCode());// unique hashcode
+        int serviceHash = Math.abs ((serviceProviderUsername.toString()+serviceType+servicePrice.toString()).hashCode());
         Service service = new Service(serviceProviderUsername, serviceType, servicePrice, serviceHash, informationList, documentList);
         databaseUsers.child("services").child(Integer.toString(serviceHash)).setValue(service);
         attachServicetoUser(serviceProviderUsername, serviceHash, service);
@@ -47,7 +63,6 @@ public class DatabaseManager {
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         bundle.putString("username", serviceProviderUsername);
         i.putExtras(bundle);
-
         C.startActivity(i);
     }
 
@@ -93,12 +108,22 @@ public class DatabaseManager {
                     for (DataSnapshot U1 : dataSnapshot.getChildren()) {
                         User user = U1.getValue(User.class);
                         if (user.username.equals(Username)) {
-                            hellomessage.setText("Hello " + Username+ "\nYou are a user of type " + user.AccountType);
-                            if(user.AccountType.toString().equals("admin") ) {
-                                makePost.setVisibility(Button.VISIBLE);
+                            hellomessage.setText("Hello " + user.FirstName + "\nYou are a user of type " + user.AccountType);
+                            userType1.setText(user.AccountType);
+                            if (user.AccountType.toString().equals("Employee") || user.AccountType.toString().equals("admin")) {
+
+                                editHours.setVisibility(Button.VISIBLE);
+                                editProfile.setVisibility(Button.VISIBLE);
+                                button_seMyAds.setVisibility(Button.VISIBLE);
+                                if (user.AccountType.toString().equals("admin")) {
+                                    editHours.setVisibility(Button.INVISIBLE);
+                                    editProfile.setVisibility(Button.INVISIBLE);
+                                    makePost.setVisibility(Button.VISIBLE);
+                                }
                             }
                         } else {
                             Toast.makeText(context, "No user logged in", Toast.LENGTH_LONG).show();
+                            makePost.setVisibility(Button.INVISIBLE);
                         }
                     }
                 } else {
@@ -190,8 +215,6 @@ public class DatabaseManager {
                     for (DataSnapshot U1 : dataSnapshot.getChildren()) {
                         User user = U1.getValue(User.class);
                         if (user.username.equals(username)) {
-                            // user.servicesOffered.add(ServiceHash);
-                            // databaseUsers.child("users").child(username).setValue(user);
                             databaseUsers.child("users").child(username).child("so").child(String.valueOf(ServiceHash)).setValue(service);
                         } else {
                         }
@@ -206,6 +229,14 @@ public class DatabaseManager {
 
             }
         });
+    }
+
+    public void CreateHours(String username, AvailableHours availableHours){
+        databaseUsers.child("hours").child(username).setValue(availableHours);
+    }
+
+    public void CreateProfile(String username, userProfile profile){
+        databaseUsers.child("profile").child(username).setValue(profile);
     }
 
     private DatabaseManager(){
