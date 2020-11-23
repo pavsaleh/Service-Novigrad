@@ -28,7 +28,7 @@
         app:layout_constraintTop_toBottomOf="@+id/TitleText">
 
         <TextView
-            android:id="@+id/companyName"
+            android:id="@+id/branchName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="48dp"
@@ -40,8 +40,8 @@
 
         <TextView
             android:id="@+id/textAddress"
-            android:layout_width="260dp"
-            android:layout_height="50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="104dp"
             android:text="TextView"
             app:layout_constraintStart_toStartOf="@+id/phoneNum"
@@ -53,7 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="TextView"
-            app:layout_constraintStart_toStartOf="@+id/companyName"
+            app:layout_constraintStart_toStartOf="@+id/branchName"
             app:layout_constraintTop_toBottomOf="@+id/textAddress" />
 
         <Button
@@ -69,7 +69,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/companyName" />
+            app:layout_constraintTop_toBottomOf="@+id/branchName" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

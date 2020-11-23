@@ -3,32 +3,34 @@ package com.example.servicenovigrad;
 import android.content.Intent;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.telephony.PhoneNumberUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.AutocompleteFilter;
-import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
-import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.Autocomplete;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+import com.google.android.libraries.places.api.model.Place;
+
+import java.util.Arrays;
 
 
 public class makeProfile extends AppCompatActivity {
     Button button_submitProfile;
-    EditText editAddress;
-    EditText editCompany;
-    EditText phoneNum;
-    EditText Desc;
+    public EditText editAddress;
+    public EditText editCompany;
+    public EditText phoneNum;
     DatabaseManager DBM;
-    CheckBox Licensed;
     View Frame;
+    public String CurrentUser;
 
-    private String CurrentUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,12 +39,25 @@ public class makeProfile extends AppCompatActivity {
         CurrentUser = bundle.getString("username", "blank");
         DBM = DatabaseManager.getinstance();
 
-        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
-                getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+        String apiKey = getString(R.string.api_key);
 
-        AutocompleteFilter autocompleteFilter = new AutocompleteFilter.Builder().setTypeFilter(AutocompleteFilter.TYPE_FILTER_ADDRESS).build();
+        /**
+         * Initialize Places. For simplicity, the API key is hard-coded. In a production
+         * environment we recommend using a secure mechanism to manage API keys.
+         */
+        if (!Places.isInitialized()) {
+            Places.initialize(getApplicationContext(), apiKey);
+        }
 
-        autocompleteFragment.setFilter(autocompleteFilter);
+        // Create a new Places client instance.
+        PlacesClient placesClient = Places.createClient(this);
+
+
+        // Initialize the AutocompleteSupportFragment.
+        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
+                getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+
+        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
 
         autocompleteFragment.setHint("Select Address");
 
@@ -50,8 +65,8 @@ public class makeProfile extends AppCompatActivity {
             @Override
             public void onPlaceSelected(Place place) {
                 // TODO: Get info about the selected place.
-                Log.i("Location", "Place: " + place.getAddress());
-                editAddress.setText(place.getAddress());
+                Log.i("Location", "Place: " + place.getName() + ", " + place.getId());
+                editAddress.setText(place.getName());
             }
 
             @Override
@@ -60,7 +75,6 @@ public class makeProfile extends AppCompatActivity {
                 Log.i("Location", "An error occurred: " + status);
             }
         });
-
         findViews();
         setButtonListeners();
     }
@@ -77,7 +91,7 @@ public class makeProfile extends AppCompatActivity {
         button_submitProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(editAddress.getText().toString().length()>0 && editAddress.getText().toString().length()>0 && phoneNum.getText().toString().length()>0) {
+                if(editAddress.getText().toString().length()>0 && editCompany.getText().toString().length()>0 && phoneNum.getText().toString().length()>0) {
                     userProfile p = new userProfile(editAddress.getText().toString(), phoneNum.getText().toString(), editCompany.getText().toString(), CurrentUser);
                     DBM.CreateProfile(CurrentUser, p);
                     Intent i = new Intent(getApplicationContext(), MainActivity.class);

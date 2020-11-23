@@ -24,10 +24,8 @@ import static com.example.servicenovigrad.MainActivity.makePost;
 public class seeProfile extends AppCompatActivity {
     TextView textAddress;
     TextView phoneNum;
-    TextView companyName;
-    TextView isLic;
+    TextView branchName;
     TextView TitleText;
-    TextView GenDesc;
     String SelectedUser;
     Button SeeUserAds;
     String CurrentUser;
@@ -43,7 +41,7 @@ public class seeProfile extends AppCompatActivity {
         setContentView(R.layout.activity_see_profile);
         textAddress = findViewById(R.id.textAddress);
         phoneNum = findViewById(R.id.phoneNum);
-        companyName = findViewById(R.id.companyName);
+        branchName = findViewById(R.id.branchName);
         TitleText = findViewById(R.id.TitleText);
         SeeUserAds = findViewById(R.id.button_userAds);
 
@@ -64,12 +62,12 @@ public class seeProfile extends AppCompatActivity {
                             TitleText.setVisibility(View.VISIBLE);
                             textAddress.setVisibility(View.VISIBLE);
                             phoneNum.setVisibility(View.VISIBLE);
-                            companyName.setVisibility(View.VISIBLE);
+                            branchName.setVisibility(View.VISIBLE);
 
                             TitleText.setText(user.username.toString() + "'s Profile");
                             textAddress.setText("Address: "+ user.Address);
                             phoneNum.setText("Phone Number: " +user.Phonenumber);
-                            companyName.setText("Company Name: " + user.CompanyName.toString());
+                            branchName.setText("Branch Name: " + user.CompanyName.toString());
                         } else {
                             Toast.makeText(getApplicationContext(), "no user logged in", Toast.LENGTH_LONG).show();
                         }
@@ -80,7 +78,7 @@ public class seeProfile extends AppCompatActivity {
                     TitleText.setVisibility(View.VISIBLE);
                     textAddress.setVisibility(View.INVISIBLE);
                     phoneNum.setVisibility(View.INVISIBLE);
-                    companyName.setVisibility(View.INVISIBLE);
+                    branchName.setVisibility(View.INVISIBLE);
                 }
                 SeeUserAds.setOnClickListener(new View.OnClickListener() {
                     @Override

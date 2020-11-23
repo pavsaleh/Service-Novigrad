@@ -21,6 +21,7 @@ android {
         }
         resValue "string", "maps_api_key", (secureProps.getProperty("MAPS_API_KEY") ?: "")
 
+
     }
 
     buildTypes {
@@ -46,8 +47,9 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-database:4.3.2'
     implementation 'com.firebaseui:firebase-ui-firestore:4.3.2'
     implementation 'com.google.android.gms:play-services-places:17.0.0'
-    implementation 'com.googlecode.libphonenumber:libphonenumber:4.3'
-    implementation 'com.googlecode.libphonenumber:geocoder:1.7'
+    implementation 'com.googlecode.libphonenumber:libphonenumber:8.12.13'
+    implementation 'com.googlecode.libphonenumber:geocoder:2.149'
+    implementation 'com.google.android.libraries.places:places:2.4.0'
 
 }
 
