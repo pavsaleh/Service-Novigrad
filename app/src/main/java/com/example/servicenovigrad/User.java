@@ -20,6 +20,9 @@ public class User {
     public static final String ADMIN  = "admin";
     public static final String EMPLOYEE  ="Employee";
 
+    public double CurrentRating = 0;
+    public int RatingCount = 0;
+
     public User(){}
 
     public User(String username, String email, String password, String FirstName, String LastName, String AccountType) {
@@ -30,10 +33,11 @@ public class User {
         this.FirstName=FirstName;
         this.LastName = LastName;
         this.AccountType = AccountType;
+        this.servicesOffered = new ArrayList<Integer>();
+        servicesOffered.add(0);
     }
 
     public void addServiceRef(int ServHash){
         servicesOffered.add(ServHash);
     }
-
 }

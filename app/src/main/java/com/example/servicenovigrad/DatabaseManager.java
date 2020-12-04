@@ -32,9 +32,8 @@ import static com.example.servicenovigrad.MainActivity.editHours;
 import static com.example.servicenovigrad.MainActivity.editPost;
 import static com.example.servicenovigrad.MainActivity.editProfile;
 import static com.example.servicenovigrad.MainActivity.userType1;
-
-
-
+import static com.example.servicenovigrad.MainActivity.deleteUsers;
+import static com.example.servicenovigrad.MainActivity.requests;
 
 public class DatabaseManager {
     private static DatabaseManager instance;
@@ -50,6 +49,59 @@ public class DatabaseManager {
         User user = new User(username, email, password, FirstName, LastName, AccountType);
         String userID = databaseUsers.push().getKey();
         databaseUsers.child("users").child(username).setValue(user);
+    }
+
+    public void AddRating(Rating r, String username){
+        int Hash = Math.abs ((username+ r.toString()).hashCode());// unique hashcode
+        databaseUsers.child("Ratings").child(username).child(Hash+"").setValue(r);
+        UpdateRatingCounter(username, r.Score);
+        UpdateAverageRating(username, r.Score);
+    }
+
+    private void UpdateAverageRating(final String username, final int newScore){
+        Query query = databaseUsers.child("users").orderByChild("username").equalTo(username);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                double newAverageScore;
+                for (DataSnapshot U1 : dataSnapshot.getChildren()) {
+                    User user = U1.getValue(User.class);
+                    if (user.RatingCount >= 1) {
+                        newAverageScore = ((user.RatingCount - 1) * user.CurrentRating + newScore) / user.RatingCount;
+                        databaseUsers.child("users").child(username).child("CurrentRating").setValue(newAverageScore);
+                    }
+                    else{
+                        databaseUsers.child("users").child(username).child("CurrentRating").setValue(newScore);
+                    }
+                }
+                return;
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w(TAG, "onCancelled", databaseError.toException());
+            }
+        });
+    }
+
+    private  void UpdateRatingCounter(final String username, final int score){
+        Query query = databaseUsers.child("users").orderByChild("username").equalTo(username);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot U1 : dataSnapshot.getChildren()) {
+                    User user = U1.getValue(User.class);
+                    databaseUsers.child("users").child(username).child("RatingCount").setValue(user.RatingCount + 1);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w(TAG, "onCancelled", databaseError.toException());
+            }
+        });
+    }
+    private void GetRating(){
     }
 
     public void addService(String serviceProviderUsername, String serviceType, Double servicePrice, Context C, List<String> informationList, List<String> documentList){
@@ -84,7 +136,6 @@ public class DatabaseManager {
                             bundle.putString("username", Username);
                             i.putExtras(bundle);
                             context.startActivity(i);
-
                         } else {
                             Toast.makeText(context, "Wrong Password", Toast.LENGTH_LONG).show();
                         }
@@ -93,7 +144,6 @@ public class DatabaseManager {
                     Toast.makeText(context, "User not found", Toast.LENGTH_LONG).show();
                 }
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {}
         });
@@ -115,10 +165,12 @@ public class DatabaseManager {
                                 editHours.setVisibility(Button.VISIBLE);
                                 editProfile.setVisibility(Button.VISIBLE);
                                 button_seMyAds.setVisibility(Button.VISIBLE);
+                                requests.setVisibility(Button.VISIBLE);
                                 if (user.AccountType.toString().equals("admin")) {
                                     editHours.setVisibility(Button.INVISIBLE);
                                     editProfile.setVisibility(Button.INVISIBLE);
                                     makePost.setVisibility(Button.VISIBLE);
+                                    deleteUsers.setVisibility(Button.VISIBLE);
                                 }
                             }
                         } else {
@@ -130,7 +182,6 @@ public class DatabaseManager {
                     Toast.makeText(context, "User not found", Toast.LENGTH_LONG).show();
                 }
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {}
         });
@@ -160,7 +211,6 @@ public class DatabaseManager {
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
             }
         });
     }
@@ -193,7 +243,6 @@ public class DatabaseManager {
                     }
                 }
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {}
         });
@@ -204,6 +253,16 @@ public class DatabaseManager {
         dR.removeValue();
         DatabaseReference dR2 = FirebaseDatabase.getInstance().getReference().child("users").child(Username).child("so").child(Integer.toString(serviceID));
         dR2.removeValue();
+    }
+
+    public void DeleteUser (String username){
+        DatabaseReference dR = FirebaseDatabase.getInstance().getReference().child("users").child((username));
+        dR.removeValue();
+    }
+
+    public void DeleteServiceRequest(String firstName) {
+        DatabaseReference dR = FirebaseDatabase.getInstance().getReference().child("Bookings").child(firstName);
+        dR.removeValue();
     }
 
     private void attachServicetoUser(final String username, final int ServiceHash, final Service service) {
@@ -223,10 +282,8 @@ public class DatabaseManager {
 
                 }
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
             }
         });
     }
@@ -237,6 +294,16 @@ public class DatabaseManager {
 
     public void CreateProfile(String username, userProfile profile){
         databaseUsers.child("profile").child(username).setValue(profile);
+    }
+
+    public void AcceptServiceRequests(Booking appointment){
+        int bookingHash = Math.abs ((appointment.providerName.toString()+appointment.customerName+appointment.startTime.toString()+appointment.endTime.toString()+appointment.serviceName.toString()).hashCode());// unique hashcode
+        databaseUsers.child("Bookings").child("Accepted bookings").child(bookingHash +"").setValue(appointment);
+    }
+
+    public void CreateBooking(Booking appointment){
+        int bookingHash = Math.abs ((appointment.providerName.toString()+appointment.customerName+appointment.startTime.toString()+appointment.endTime.toString()+appointment.serviceName.toString()).hashCode());// unique hashcode
+        databaseUsers.child("Bookings").child(appointment.providerName).child(bookingHash +"").setValue(appointment);
     }
 
     private DatabaseManager(){

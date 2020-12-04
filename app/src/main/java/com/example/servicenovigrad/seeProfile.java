@@ -4,6 +4,7 @@ import android.content.Intent;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Layout;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -15,6 +16,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+
+import java.text.DecimalFormat;
 
 import static com.example.servicenovigrad.MainActivity.editHours;
 import static com.example.servicenovigrad.MainActivity.editProfile;
@@ -29,6 +32,9 @@ public class seeProfile extends AppCompatActivity {
     String SelectedUser;
     Button SeeUserAds;
     String CurrentUser;
+    Button RateMe;
+    TextView ratingbox;
+    Button seeRate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +50,11 @@ public class seeProfile extends AppCompatActivity {
         branchName = findViewById(R.id.branchName);
         TitleText = findViewById(R.id.TitleText);
         SeeUserAds = findViewById(R.id.button_userAds);
+        RateMe = findViewById(R.id.RateMe);
+        ratingbox = findViewById(R.id.ratingbox);
+        seeRate = findViewById(R.id.seeRate);
+
+        getRating(SelectedUser);
 
         DatabaseReference databaseUsers;
         databaseUsers = FirebaseDatabase.getInstance().getReference();
@@ -83,7 +94,6 @@ public class seeProfile extends AppCompatActivity {
                 SeeUserAds.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
                         Bundle bundle = new Bundle();
                         Intent i = new Intent(getApplicationContext(), specificServices.class);
                         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -94,11 +104,59 @@ public class seeProfile extends AppCompatActivity {
                         finish();
                     }
                 });
+                RateMe.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Bundle bundle = new Bundle();
+                        Intent i = new Intent(getApplicationContext(), RateUser.class);
+                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        bundle.putString("selectedUser",SelectedUser);
+                        bundle.putString("username",CurrentUser);
+                        i.putExtras(bundle);
+                        startActivity(i);
+                        finish();
+                    }
+                });
+                seeRate.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Bundle bundle = new Bundle();
+                        Intent i = new Intent(getApplicationContext(), DisplayReview.class);
+                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        bundle.putString("username", SelectedUser);
+                        i.putExtras(bundle);
+                        startActivity(i);
+                        finish();
+                    }
+                });
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
+            }
+        });
+    }
+    private static DecimalFormat df2 = new DecimalFormat(".##");
+
+    private void getRating(final String username){
+
+        final DatabaseReference databaseRating;
+        databaseRating = FirebaseDatabase.getInstance().getReference();
+        Query query = databaseRating.child("users").orderByChild("username").equalTo(username);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            private static final String TAG = "seeProfile";
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot U1 : dataSnapshot.getChildren()) {
+                    User user = U1.getValue(User.class);
+                    ratingbox.setText("User's overall rating: "+ df2.format(user.CurrentRating));
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w(TAG, "onCancelled", databaseError.toException());
             }
         });
     }

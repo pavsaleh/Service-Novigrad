@@ -67,12 +67,17 @@ public class specificServices extends AppCompatActivity {
                 Button button_View_profile = v.findViewById(R.id.button_View_Profile);
                 Button availability = v.findViewById(R.id.availability);
                 Button copyService = v.findViewById(R.id.cloneAD);
+                Button bookService = v.findViewById(R.id.bookService);
 
                 if (CurrentUser.equals(service.serviceProviderUsername.toString()) || CurrentUser.equals("admin")){
                     button_edit.setVisibility(View.VISIBLE);
                     button_del.setVisibility(View.VISIBLE);
                     button_View_profile.setVisibility(View.INVISIBLE);
                     availability.setVisibility(View.INVISIBLE);
+                    bookService.setVisibility(View.INVISIBLE);
+                }
+                if(service.serviceProviderUsername.equals(User.ADMIN)){
+                    bookService.setVisibility(View.INVISIBLE);
                 }
                 if (CurrentUserType.equals("Employee") && service.serviceProviderUsername.equals("admin")) {
                     copyService.setVisibility(View.VISIBLE);
@@ -126,7 +131,6 @@ public class specificServices extends AppCompatActivity {
                         DBM.addService(CurrentUser,service.serviceType.toString(), service.servicePrice.doubleValue(),getApplicationContext(), service.informationList, service.documentList);
                     }
                 });
-
             }
         };
         lv.setAdapter(adapter);
@@ -146,6 +150,11 @@ public class specificServices extends AppCompatActivity {
 
     public void onBackPressed() {
         super.onBackPressed();
+        Intent i = new Intent(getApplicationContext(), MainActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("username", CurrentUser);
+        i.putExtras(bundle);
+        startActivity(i);
         finish();
     }
 

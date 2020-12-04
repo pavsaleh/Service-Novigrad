@@ -45,7 +45,16 @@
 
         <activity android:name=".seeProfile" />
         <activity android:name=".seeAvailability" />
-        <activity android:name=".specificServices"></activity>
+        <activity android:name=".ShowSearchedResults" />
+        <activity android:name=".ShowSearchedResultsAddress" />
+        <activity android:name=".specificServices" />
+        <activity android:name=".RateUser" />
+        <activity android:name=".DisplayReview" />
+        <activity android:name=".SearchServices" />
+        <activity android:name=".SearchedServices" />
+        <activity android:name=".deleteUser" />
+        <activity android:name=".Requests" />
+        <activity android:name=".CreateBooking"></activity>
     </application>
 
 </manifest>

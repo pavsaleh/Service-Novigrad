@@ -262,8 +262,6 @@ public class HourSelect extends AppCompatActivity implements TimePickerDialog.On
                 timeSunEnd = true;
             }
         });
-
-
         addButtonListener();
     }
 
@@ -386,9 +384,8 @@ public class HourSelect extends AppCompatActivity implements TimePickerDialog.On
     public void onBackPressed() {
         super.onBackPressed();
         Intent i = new Intent(getApplicationContext(), MainActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putString("username", CurrentUser);
-        i.putExtras(bundle);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        i.putExtras(getIntent().getExtras());
         startActivity(i);
         finish();
     }
@@ -404,11 +401,9 @@ public class HourSelect extends AppCompatActivity implements TimePickerDialog.On
         SubmitTime = findViewById(R.id.SubmitTime);
     }
 
-
     private void addButtonListener() {
         monday.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
                 if (isChecked){
                     EditTextMonStart.setVisibility(EditText.VISIBLE);
                     EditTextMonStart.setText("8:00");
@@ -418,10 +413,8 @@ public class HourSelect extends AppCompatActivity implements TimePickerDialog.On
                     EditTextMonEnd.setEnabled(true);
 
                 }else{
-//                    EditTextMonStart.setVisibility(EditText.VISIBLE);
                     EditTextMonStart.setEnabled(false);
                     EditTextMonStart.setText("0:00");
-//                    EditTextMonEnd.setVisibility(EditText.INVISIBLE);
                     EditTextMonEnd.setEnabled(false);
                     EditTextMonEnd.setText("0:00");
                 }
@@ -438,10 +431,8 @@ public class HourSelect extends AppCompatActivity implements TimePickerDialog.On
                     EditTextTuesEnd.setEnabled(true);
 
                 }else{
-//                    EditTextTuesStart.setVisibility(EditText.VISIBLE);
                     EditTextTuesStart.setEnabled(false);
                     EditTextTuesStart.setText("0:00");
-//                    EditTextTuesEnd.setVisibility(EditText.INVISIBLE);
                     EditTextTuesEnd.setEnabled(false);
                     EditTextTuesEnd.setText("0:00");
                 }
@@ -458,10 +449,8 @@ public class HourSelect extends AppCompatActivity implements TimePickerDialog.On
                     EditTextWedEnd.setEnabled(true);
 
                 }else{
-//                    EditTextWedStart.setVisibility(EditText.VISIBLE);
                     EditTextWedStart.setEnabled(false);
                     EditTextWedStart.setText("0:00");
-//                    EditTextWedEnd.setVisibility(EditText.INVISIBLE);
                     EditTextWedEnd.setEnabled(false);
                     EditTextWedEnd.setText("0:00");
                 }
@@ -478,10 +467,8 @@ public class HourSelect extends AppCompatActivity implements TimePickerDialog.On
                     EditTextThursEnd.setEnabled(true);
 
                 }else{
-//                    EditTextThursStart.setVisibility(EditText.VISIBLE);
                     EditTextThursStart.setEnabled(false);
                     EditTextThursStart.setText("0:00");
-//                    EditTextThursEnd.setVisibility(EditText.INVISIBLE);
                     EditTextThursEnd.setEnabled(false);
                     EditTextThursEnd.setText("0:00");
                 }
@@ -498,10 +485,8 @@ public class HourSelect extends AppCompatActivity implements TimePickerDialog.On
                     EditTextFriEnd.setEnabled(true);
 
                 }else{
-//                    EditTextFriStart.setVisibility(EditText.VISIBLE);
                     EditTextFriStart.setEnabled(false);
                     EditTextFriStart.setText("0:00");
-//                    EditTextFriEnd.setVisibility(EditText.INVISIBLE);
                     EditTextFriEnd.setEnabled(false);
                     EditTextFriEnd.setText("0:00");
                 }
@@ -518,10 +503,8 @@ public class HourSelect extends AppCompatActivity implements TimePickerDialog.On
                     EditTextSatEnd.setEnabled(true);
 
                 }else{
-//                    EditTextSatStart.setVisibility(EditText.VISIBLE);
                     EditTextSatStart.setEnabled(false);
                     EditTextSatStart.setText("0:00");
-//                    EditTextSatEnd.setVisibility(EditText.INVISIBLE);
                     EditTextSatEnd.setEnabled(false);
                     EditTextSatEnd.setText("0:00");
                 }
@@ -538,10 +521,8 @@ public class HourSelect extends AppCompatActivity implements TimePickerDialog.On
                     EditTextSunEnd.setEnabled(true);
 
                 }else{
-//                    EditTextSunStart.setVisibility(EditText.VISIBLE);
                     EditTextSunStart.setEnabled(false);
                     EditTextSunStart.setText("0:00");
-//                    EditTextSunEnd.setVisibility(EditText.INVISIBLE);
                     EditTextSunEnd.setEnabled(false);
                     EditTextSunEnd.setText("0:00");
                 }
@@ -550,7 +531,6 @@ public class HourSelect extends AppCompatActivity implements TimePickerDialog.On
         SubmitTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 AvailableHours Sub = new AvailableHours(
                         EditTextMonStart.getText().toString(),  EditTextMonEnd.getText().toString(),
                         EditTextTuesStart.getText().toString(),  EditTextTuesEnd.getText().toString(),

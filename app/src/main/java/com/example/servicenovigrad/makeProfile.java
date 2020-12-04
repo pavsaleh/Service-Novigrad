@@ -52,7 +52,6 @@ public class makeProfile extends AppCompatActivity {
         // Create a new Places client instance.
         PlacesClient placesClient = Places.createClient(this);
 
-
         // Initialize the AutocompleteSupportFragment.
         AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
                 getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);

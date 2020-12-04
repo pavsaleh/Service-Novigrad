@@ -23,6 +23,9 @@ public class MainActivity extends AppCompatActivity {
     static Button editProfile;
     static TextView userType1;
     static Button button_seMyAds;
+    static Button searchServices;
+    static Button deleteUsers;
+    static Button requests;
 
     @Override
     public void onBackPressed() {
@@ -48,6 +51,9 @@ public class MainActivity extends AppCompatActivity {
         editProfile=findViewById(R.id.button_editProfile);
         userType1=findViewById(R.id.userType);
         button_seMyAds = findViewById(R.id.button_seMyServices);
+        searchServices = findViewById(R.id.button_searchServices);
+        requests = findViewById(R.id.button_requests);
+        deleteUsers = findViewById(R.id.button_deleteUsers);
         DBM.SetNameandInfo(getApplicationContext(),bundle.getString("username", "blank"));
         CurrentUser = bundle.getString("username", "blank");
         Log.d("Current user is: ", CurrentUser);
@@ -115,6 +121,43 @@ public class MainActivity extends AppCompatActivity {
                 i.putExtras(bundle);
                 startActivity(i);
                 finish();
+            }
+        });
+        searchServices.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Bundle bundle = new Bundle();
+                Intent i = new Intent(getApplicationContext(), SearchServices.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                bundle.putString("username", CurrentUser);
+                i.putExtras(bundle);
+                startActivity(i);
+            }
+        });
+        requests.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                Intent i = new Intent(getApplicationContext(), Requests.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                bundle.putString("username", CurrentUser);
+                bundle.putString("userType", userType1.getText().toString() );
+                i.putExtras(bundle);
+                startActivity(i);
+            }
+        });
+        deleteUsers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Bundle bundle = new Bundle();
+                Intent i = new Intent(getApplicationContext(), deleteUser.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                bundle.putString("username", CurrentUser);
+                bundle.putString("userType", userType1.getText().toString() );
+                i.putExtras(bundle);
+                startActivity(i);
             }
         });
     }

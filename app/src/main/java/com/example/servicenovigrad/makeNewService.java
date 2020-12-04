@@ -110,7 +110,6 @@ public class makeNewService extends AppCompatActivity {
         button_Submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 sServicePrice = servicePrice.getText().toString();
                 sServiceTitle = serviceTitle.getText().toString();
                 String[] information = informationList.toArray(new String[informationList.size()]);
