@@ -1,11 +1,9 @@
 package com.example.servicenovigrad;
 
 import com.google.firebase.database.IgnoreExtraProperties;
-
 import java.util.ArrayList;
 
 @IgnoreExtraProperties
-
 public class User {
 
     public String email;

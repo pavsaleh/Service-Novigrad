@@ -1,11 +1,9 @@
 package com.example.servicenovigrad;
 
-import android.content.Intent;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EdgeEffect;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;

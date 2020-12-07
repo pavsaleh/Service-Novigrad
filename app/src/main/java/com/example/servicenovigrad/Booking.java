@@ -1,7 +1,5 @@
 package com.example.servicenovigrad;
 
-import java.util.Calendar;
-
 public class Booking {
     public String customerName;
     public String providerName;

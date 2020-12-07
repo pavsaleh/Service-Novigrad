@@ -1,7 +1,6 @@
 package com.example.servicenovigrad;
 
 import android.os.Bundle;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 public class About extends AppCompatActivity {

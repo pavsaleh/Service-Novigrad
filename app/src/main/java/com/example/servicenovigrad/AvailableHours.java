@@ -1,8 +1,5 @@
 package com.example.servicenovigrad;
 
-import java.sql.Time;
-import java.text.SimpleDateFormat;
-
 public class AvailableHours {
     public String MonStart;
     public String MonEnd;

@@ -6,11 +6,7 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 import android.view.View;
-import android.widget.Toast;
-import com.google.firebase.database.DataSnapshot;
 import androidx.appcompat.app.AppCompatActivity;
-
-
 
 public class MainActivity extends AppCompatActivity {
     static TextView hellomessage;

@@ -1,21 +1,16 @@
 package com.example.servicenovigrad;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ListView;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.firebase.ui.database.FirebaseListOptions;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class DisplayReview extends AppCompatActivity {
 
